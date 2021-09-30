@@ -156,17 +156,20 @@ the `update` and `get` permissions on the applications you want to manage.
 A most basic version that grants `get` and `update` permissions on all of the
 applications managed by Argo CD might look as follows:
 
-```text
-p, role:image-updater, applications, get, */*, allow
-p, role:image-updater, applications, update, */*, allow
-g, image-updater, role:image-updater
+```yaml
+data:
+  policy.default: role:readonly
+  policy.csv: |
+    p, role:image-updater, applications, get, */*, allow
+    p, role:image-updater, applications, update, */*, allow
+    g, image-updater, role:image-updater
 ```
 
-You might want to strip that down to apps in a specific project, or to specific
-apps, however.
+The permissions can be further restricted to apps in a specific project, or to
+specific apps.
 
-Put the RBAC permissions to Argo CD's `argocd-rbac-cm` ConfigMap and Argo CD will
-pick them up automatically.
+Edit the `argocd-rbac-cm` ConfigMap and Argo CD will pick up the changes
+automatically.
 
 ### Configure Argo CD endpoint
 
